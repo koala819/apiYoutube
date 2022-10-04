@@ -4,11 +4,16 @@ const {response} = require("express");
 
 google.youtube('v3').videos.list({
     key: process.env.YOUTUBE_TOKEN,
-    part: 'snippet',
-    id: 'Ppf2NROT-t8'
+    part: ['snippet','statistics','contentDetails','status'],
+    id: '8vAdAxgX2FM'
 }).then((response) => {
     const {data} = response;
     data.items.forEach((item) => {
-        console.log(`Title: ${item.snippet.title}\n Description: ${item.snippet.description}\n`);
+       for (const eachSnippet of Object.entries(item)) {
+            console.log(eachSnippet);
+        };
+        data.items.forEach((item) => {
+            console.log(`Tags: ${item.snippet.tags}\n defaultLanguage: ${item.snippet.defaultLanguage}\n`);
+        })
     })
 }).catch((err) => console.log(err))
